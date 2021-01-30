@@ -1,0 +1,28 @@
+{
+  "name": "transformationsw",
+  "version": "1.0.0",
+  "description": "Software for RestApiTransformation to GraphQL",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fabianissam/TransformationSW.git"
+  },
+  "author": "Fabian Abdallah",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fabianissam/TransformationSW/issues"
+  },
+  "homepage": "https://github.com/fabianissam/TransformationSW#readme",
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "express-graphql": "^0.11.0",
+    "graphql": "^15.3.0",
+    "multer": "^1.4.2",
+    "mysql": "^2.18.1",
+    "openapi-to-graphql": "^2.2.5"
+  }
+}
