@@ -3,7 +3,8 @@ const transformation = require("../Transformation/transformation");
 const upload = multer({ dest: "uploads/" });
 
 module.exports = function (app) {
-  app.get("/", (req, res) => {
+  app.
+  app.get("/root", (req, res) => {
     res.render("../Views/index.html");
   });
   //response created graphql server with REST-Client support

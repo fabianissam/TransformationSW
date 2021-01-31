@@ -7,13 +7,13 @@ const graphql = require("graphql");
 const OtG = require("openapi-to-graphql");
 
 function Transformation() {
-  this.createGraphQLWrapper = (document) => {
+  this.createGraphQLWrapper = async (document) => {
   
     const oas = require("./Openapi.json");
     const { schema } = await OtG.createGraphQLSchema(oas);
  
 
-    return schema;
+    return graphql.printSchema(schema);
   };
 
   this.createGraphQLOperations = () => {
