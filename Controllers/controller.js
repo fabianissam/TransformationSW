@@ -1,15 +1,28 @@
-const mutler = require("multer");
+const multer = require("multer");
+const fs = require("fs");
 const transformation = require("../Transformation/transformation");
-const upload = multer({ dest: "uploads/" });
+var destination = "/home/fabian/uploads/";
+const storage = multer.diskStorage({
+  destination: destination,
+  filename: function (req, file, cb) {
+    //req.body is empty...
+    //How could I get the new_file_name property sent from client here?
+    cb(null, "openapifile.json");
+  },
+});
+const upload = multer({
+  storage: storage,
+});
 
 module.exports = function (app) {
-  app.
   app.get("/root", (req, res) => {
-    res.render("../Views/index.html");
+    res.render("../Views/index.ejs");
   });
   //response created graphql server with REST-Client support
   app.post("/transformation", upload.single("openapifile"), (req, res) => {
-    var trafo = new transformation();
-    res.send(trafo.createGraphQLWrapper(req.file)); // mit promise arbeiten wenn promise nicht stimmt fehlermeldung an den client schicken 
-  });
+    var trafo = new transformation(destination + "openapifile.json");
+    var result = trafo.createGraphQLWrapper();
+    // fs.unlinkSync("./uploads/openapifile");
+    res.send(result);
+  }); // mit promise arbeiten wenn promise nicht stimmt fehlermeldung an den client schicken
 };
