@@ -18,3 +18,110 @@
   
 </body>
 </html>
+"use strict";
+
+const util = require("util");
+
+const express = require("express");
+const { graphqlHTTP } = require("express-graphql");
+const {
+  __Type,
+  printSchema
+  typeFromAST,
+  TypeInfo,
+  printIntrospectionSchema,
+} = require("graphql");
+const OtG = require("openapi-to-graphql");
+
+async function startServer() {
+  // use OpenAPI-to-GraphQL to create a GraphQL schema:
+  const oas = require("./Openapi.json");
+  const { schema } = await OtG.createGraphQLSchema(
+    oas,
+    /*{
+    customResolvers: {
+      "simple FHAachen API": {
+        "/person": {
+          get: (obj, args, context, info) => {
+            return [
+              {
+                id: 6000,
+                name: "Abdallah",
+                vorname: "Fabian",
+                benutzername: "fabianissam",
+                password: "fabianissam",
+                fachbereich: 5,
+                email: "fabian.abdallah98@googlemail.com",
+              },
+              {
+                id: 6001,
+                name: "Abdallah",
+                vorname: "Fabian",
+                benutzername: "fabianissam",
+                password: "fabianissam",
+                fachbereich: 5,
+                email: "fabian.abdallah98@googlemail.com",
+              },
+            ];
+          },
+        },
+      },
+    },
+  }*/ {
+      customResolver: {
+        "simple FHAachen API": {
+          "/person": {
+            get: (obj, args, context, info) => {
+              return null;
+            },
+            post: (obj, args, context, info) => {
+              return null;
+            },
+            put: (obj, args, context, info) => {
+              return null;
+            },
+          },
+          "/person/{id}/": {
+            get: (obj, args, context, info) => {
+              return null;
+            },
+            delete: (obj, args, context, info) => {
+              return null;
+            },
+          },
+        },
+      },
+    }
+  );
+  //console.log(printSchema(schema));
+  // console.log(schema);
+  console.log(printSchema(schema));
+  // console.log(typeFromAST(schema, {}));
+  /*var info = new TypeInfo(schema);
+  console.log(info.getType());
+  console.log(info.getParentType());
+  console.log(info.getInputType());
+  console.log(info.getFieldDef());
+  console.log(info.getDirective());
+  console.log(info.getArgument());*/
+
+  // console.log(util.inspect(schema, { showHidden: false, depth: null }));
+  // setup Express.js app and serve the schema:
+  const app = express();
+
+  app.use(express.json());
+  app.use(express.urlencoded());
+  // MIDDLEWARE SOFTWARE SCHREIBEN DIE ALLE ANFRAGEN VON DER NORMALEN API ZU MEINER GRAPHQL API WEITERLEITET
+  app.use(
+    "/",
+    graphqlHTTP({
+      schema: schema,
+      graphiql: true,
+    })
+  );
+
+  app.listen(3001);
+}
+
+// Kick things off:
+startServer();
