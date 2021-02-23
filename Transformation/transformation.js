@@ -32,7 +32,7 @@ class Transformation {
     
 
       app.use(
-        "/",
+        "/graphql",
         graphqlHTTP({
           schema: schema,
           graphiql: true,
@@ -50,7 +50,7 @@ class Transformation {
   }
 
   resolverTemplate(oas) {
-    var customResolver = `{customResolver:{ "${
+    var customResolver = `{operationIdFieldNames: true, customResolver:{ "${
       oas.info.title
     }":{${this.fillResolver(oas)}},},}`;
     return customResolver;
